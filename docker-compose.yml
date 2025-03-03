@@ -1,47 +1,49 @@
 version: '3'
 services:
-    haproxy:
-        container_name: lb
-        environment:
-            - CERTS=example.com
-            - EMAIL=none@nothing.com
-            - STAGING=true
-        volumes:
-            - '$PWD/data/letsencrypt:/etc/letsencrypt'
-            - '$PWD/data/haproxy.cfg:/etc/haproxy.cfg'
-        networks:
-            - alyantNet
-        ports:
-            - '80:80'
-            - '443:443'
-        image: 'docker-haproxy-certbot:tag'
-    rsyslog:
-        container_name: rsyslog
-        environment:
-            - TZ=UTC
-            - ENV_VAR=121333
-        volumes:
-            - '$PWD/data/rsyslog/config:/config'
-        networks:
-            - alyantNet
-        ports:
-            - '514:514'
-        image: 'rsyslog/syslog_appliance_alpine'
-    back01:
-        container_name: lorem-ipsum-01
-        networks:
-            - alyantNet
-        image: 'alyant-lorem-ipsum:latest'
-    back02:
-        container_name: lorem-ipsum-02
-        networks:
-            - alyantNet
-        image: 'alyant-lorem-ipsum:latest'
-    back03:
-        container_name: lorem-ipsum-03
-        networks:
-            - alyantNet
-        image: 'alyant-lorem-ipsum:latest'
+    # haproxy:
+    #   container_name: lb
+    #   environment:
+    #       - CERTS=example.com
+    #       - EMAIL=none@nothing.com
+    #       - STAGING=true
+    #   volumes:
+    #       - '$PWD/data/letsencrypt:/etc/letsencrypt'
+    #       - '$PWD/data/haproxy.cfg:/etc/haproxy.cfg'
+    #   networks:
+    #       - alyantNet
+    #   ports:
+    #       - '80:80'
+    #       - '443:443'
+    #   image: 'docker-haproxy-certbot:tag'
+    # rsyslog:
+    #     container_name: rsyslog
+    #     environment:
+    #         - TZ=UTC
+    #         - ENV_VAR=121333
+    #     volumes:
+    #         - '$PWD/data/rsyslog/config:/config'
+    #     networks:
+    #         - alyantNet
+    #     ports:
+    #         - '514:514'
+    #     image: 'rsyslog/syslog_appliance_alpine'
+  back01: &default_backend
+    container_name: lorem-ipsum-01
+    networks:
+      - alyantNet
+    image: 'python:alpine'
+    volumes:
+      - '$PWD/web-server:/www'
+    command: 'python -m http.server'
+    working_dir: '/www'
+    ports:
+      - '8000'
+  back02:
+    <<: *default_backend
+    container_name: lorem-ipsum-02
+  back03:
+    <<: *default_backend
+    container_name: lorem-ipsum-03
 networks:
   alyantNet:
     driver: bridge

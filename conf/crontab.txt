@@ -4,3 +4,4 @@ BASH_ENV=/container.env
 
 # Execute the cert-renewal script every Sunday at 01:01 AM
 01 01 * * 7  echo "Renewing SSL" > /dev/null
+

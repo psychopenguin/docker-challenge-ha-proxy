@@ -1,5 +1,5 @@
-# start from debian 10 slim version
-FROM busybox:1.21.21
+# start from debian 12 slim version
+FROM debian:12-slim
 
 # install certbot, supervisor and utilities
 RUN apt-get update && apt-get install --no-install-recommends -yqq \

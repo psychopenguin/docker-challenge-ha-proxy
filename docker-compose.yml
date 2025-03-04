@@ -6,7 +6,7 @@ services:
     environment:
       - CERTS=aleyant.budega.club
       - EMAIL=psychopenguin@gmail.com
-      - STAGING=true
+      - STAGING=false
     volumes:
       - '$PWD/data/letsencrypt:/etc/letsencrypt'
       - '$PWD/conf/haproxy.cfg:/etc/haproxy.cfg'

@@ -55,3 +55,24 @@ Run the solution with `docker-compose up --build`.
 - Use of DNS01 challenge instead of HTTP01 for certificate issue and renewal
     - This allows to run certbot in a private network environment
 - Reduce the number of moving parts replacing HAProxy + certbot + cron image with an image of a webserver like [Caddy](https://caddyserver.com/) or [Traefik](https://traefik.io/traefik/), that can handle issue and renewal of Let's Encrypt certificate out of the box.
+
+## Evidences for running solution
+
+### Browser screenshot
+
+![Browser Screen](images/browser.png)
+
+### Certificate screenshot
+
+![Certificate](images/certificate.png)
+
+### Docker compose logs with requests being load balanced
+
+```
+lorem-ipsum-01  | 172.19.0.2 - - [04/Mar/2025 03:15:31] "GET / HTTP/1.1" 200 -
+rsyslog         | 2025-03-04T03:15:31+00:00 lb.docker-challenge-haproxy-master_alyantnet haproxy[20]: 172.16.5.1:40336 [04/Mar/2025:03:15:31.722] https~ loremipsum/backend1 0/0/1/1/3 200 4250 - - ---- 1/1/0/0/0 0/0 "GET / HTTP/1.1"
+lorem-ipsum-02  | 172.19.0.2 - - [04/Mar/2025 03:15:36] "GET / HTTP/1.1" 200 -
+rsyslog         | 2025-03-04T03:15:36+00:00 lb.docker-challenge-haproxy-master_alyantnet haproxy[20]: 172.16.5.1:40342 [04/Mar/2025:03:15:36.236] https~ loremipsum/backend2 0/0/1/2/3 200 4250 - - ---- 1/1/0/0/0 0/0 "GET / HTTP/1.1"
+lorem-ipsum-03  | 172.19.0.2 - - [04/Mar/2025 03:15:38] "GET / HTTP/1.1" 200 -
+rsyslog         | 2025-03-04T03:15:38+00:00 lb.docker-challenge-haproxy-master_alyantnet haproxy[20]: 172.16.5.1:40356 [04/Mar/2025:03:15:38.859] https~ loremipsum/backend3 0/0/0/2/2 200 4250 - - ---- 1/1/0/0/0 0/0 "GET / HTTP/1.1"
+```

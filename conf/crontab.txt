@@ -3,5 +3,5 @@ SHELL=/bin/bash
 BASH_ENV=/container.env
 
 # Execute the cert-renewal script every Sunday at 01:01 AM
-01 01 * * 7  echo "Renewing SSL" > /dev/null
+01 01 * * 7 /cert-renewal-haproxy.sh >> /etc/letsencrypt/cert-renewal.log
 

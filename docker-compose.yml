@@ -9,12 +9,12 @@ services:
       - STAGING=true
     volumes:
       - '$PWD/data/letsencrypt:/etc/letsencrypt'
-      - '$PWD/data/haproxy.cfg:/etc/haproxy.cfg'
+      - '$PWD/conf/haproxy.cfg:/etc/haproxy.cfg'
     networks:
       - alyantNet
     ports:
-      - '8080:80'
-      - '8443:443'
+      - '80:80'
+      - '443:443'
     image: 'docker-haproxy-certbot:latest'
   rsyslog:
     container_name: rsyslog
